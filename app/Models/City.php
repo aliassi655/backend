@@ -13,12 +13,15 @@ class City extends Model
     }
     public function hotel(){
         return $this->hasMany(Hotel::class);
-        
+
         }
     protected $fillable = [
         'name',
         'country',
     ];
     protected $casts = [
+
     ];
+
 }
+"esam";
