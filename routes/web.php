@@ -25,3 +25,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
     [\App\Http\Controllers\CompanyController::class,'add'])
     ->middleware('auth')
     ->name('company.add');*/
+
+    
