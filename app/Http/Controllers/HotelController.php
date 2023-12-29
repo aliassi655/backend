@@ -20,6 +20,7 @@ class HotelController extends Controller
     }
     public function store(Request $request)
     {
+        
         if ($request->isMethod("post"))
         {
             $validate= Validator::make($request->all(),[
@@ -36,6 +37,7 @@ class HotelController extends Controller
                 "name"=>$request->name,
                 "city_id"=>$request->city_id,
             ];
+           
             $hotel= Hotel::create($data);
               }
         }
