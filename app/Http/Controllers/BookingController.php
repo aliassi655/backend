@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Models\Hotel;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
 {
@@ -51,10 +52,6 @@ $tickt=Ticket::all();
      */
     public function store(Request $request)
     {
-        // $book = Booking::all();
-        // $customer = Customer::all();
-        // $ticket = Ticket::all();
-        // $hotel=Hotel::all();
 
         $customer = Customer::create([
             'name' => $request->input('name'),
@@ -62,6 +59,8 @@ $tickt=Ticket::all();
             'gender' => $request->input('gender'),
             'email'=> $request->input('email')
         ]);
+
+
 
         $hotel = Hotel::create([
             'name' => $request->input('name'),
@@ -79,24 +78,25 @@ $tickt=Ticket::all();
             'ticket_id' => $ticket->id,
         ]);
 
-        // $book=Booking::create(['name'=>Customer::create($request->ticket_id),'customer_id'=>$request->customer_id,'hotel_id'=>$request->hotel_id]);
-        // // return redirect()->back();
-        // // $book= Booking::create($request->all());
-        // $customer=Customer::create($request->all());
-        // $hotel= Hotel::create($request->all());
-        // $customer->save();
-        // $hotel->save();
-        // $book ->save();
-    return redirect()->route('showbooking');
-    // if (Ticket::exists() && Customer::exists() && Hotel::exists()) {
-    //   $book =  Booking::create(['ticket_id'=>$request->ticket_id,'customer_id'=>$request->customer_id,'hotel_id'=>$request->hotel_id]);
-    //     $book->save();
+        echo json_encode(['status'=>'add booking']);
+        // return redirect()->route('showbooking')->with();
+        // if (Ticket::exists() && Customer::exists() && Hotel::exists()) {
+            //   $book =  Booking::create(['ticket_id'=>$request->ticket_id,'customer_id'=>$request->customer_id,'hotel_id'=>$request->hotel_id]);
+            //     $book->save();
     //     return redirect()->back();
     // } else {
     //     return redirect()->route('adddata');
     // }
 
-    }
+    // $book=Booking::create(['name'=>Customer::create($request->ticket_id),'customer_id'=>$request->customer_id,'hotel_id'=>$request->hotel_id]);
+    // // return redirect()->back();
+    // // $book= Booking::create($request->all());
+    // $customer=Customer::create($request->all());
+    // $hotel= Hotel::create($request->all());
+    // $customer->save();
+    // $hotel->save();
+    // $book ->save();
+}
 
     /**
      * Display the specified resource.
@@ -104,9 +104,35 @@ $tickt=Ticket::all();
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id , $request)
     {
-        //
+        $book = Booking::all();
+        $customer = Customer::find($id);
+        $ticket = Ticket::find($id);
+        $hotel=Hotel::find($id);
+        $book=Booking::find($id);
+        if($request->isMethod('post')){
+        //     $message = ["customer,id.required"=>"entery name customer !!??"];
+        // $validate= validator::make($request->all(),[
+        //     'customer_id' => 'required|exists:Customer,id',
+        //     'hotel_id' =>  'required|exists:Hotel,id' ,
+        //     'ticket_id' =>  'required|exists:Ticket,id'],$message );
+
+        //     if($validate->fails()){
+        //     dd($validate->errors());
+        // }else{
+            $book->ubdate($request->all());
+            $customer->ubdate($request->all());
+            $customer->save();
+            $ticket->ubdate($request->all());
+            $ticket->save();
+            $hotel->ubdate($request->all());
+            $hotel->save();
+            // $book = [compact('customer'),compact('ticket'),compact('hotel')];
+            echo json_encode(['status'=>'ubdate data']);
+        // }
+
+        return redirect()->back();}
     }
 
     /**
@@ -117,8 +143,16 @@ $tickt=Ticket::all();
      */
     public function edit($id)
     {
+        $book = Booking::all();
+        $customer = Customer::all();
+        $ticket = Ticket::all();
+        $hotel=Hotel::all();
+        $customer = Customer::find($id);
+    $ticket = Ticket::find($id);
+    $hotel = Hotel::find($id);
          $book=Booking::find($id);
-        return view("city_edit",["book"=>$book]);
+        //  return view('book_edit', compact('book'), compact('customer') , compact('hotel') , compact('ticket'));
+        return view("book_edit",["book"=>$book] , ["customer"=>$customer] ,["ticket"=>$ticket] ,["hotel"=>$hotel] );
     }
 
     /**
@@ -128,10 +162,65 @@ $tickt=Ticket::all();
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+
+
+public function update(Request $request, $id)
+{
+
+    $customer = Customer::find($id);
+    $ticket = Ticket::find($id);
+    $hotel = Hotel::find($id);
+    $book = Booking::find($id);
+        // $customer->update([
+        //     'name' => $request->input('name'),
+        //     'mobile' => $request->input('mobile'),
+        //     'gender' => $request->input('gender'),
+        //     'email' => $request->input('email')
+        // ]);
+
+        // $hotel->update([
+        //     'name' => $request->input('name'),
+        //     'city_id' => $request->input('city_id')
+        // ]);
+
+        // $ticket->update([
+        //     'city_id' => $request->input('city_id'),
+        //     'company_id' => $request->input('company_id')
+        // ]);
+
+        $customer = Customer::find($id);
+        $customer->name = $request->name;
+        $customer->mobile =$request->mobile;
+        $customer->gender = $request->gender;
+        $customer->email = $request->email;
+        $customer->save();
+
+        $ticket = Ticket::find($id);
+        $ticket->city_id = $request->city_id;
+        $ticket->company_id =$request->company_id;
+        $ticket->save();
+
+        $hotel = Hotel::find($id);
+        $hotel->name =$request->name;
+        $hotel->city_id = $request->city_id;
+        $hotel->save();
+echo json_encode(['status'=>'update']);
+        // $book = Booking::find($id);
+        // $book->customer_id =$customer->id;
+        // $book->hotel_id = $ticket->id;
+        // $book->ticket_id = $hotel->id;
+        // $book->save();
+
+        // $book->update([
+        //     'customer_id' => $customer->id,
+        //     'hotel_id' => $hotel->id,
+        //     'ticket_id' => $ticket->id,
+        // ]);
+        return redirect()->route('showbooking');
+
+}
+
+// }
 
     /**
      * Remove the specified resource from storage.
@@ -146,16 +235,16 @@ $tickt=Ticket::all();
         return redirect()->back();
     }
 
-    public function adddata(Request $request)
-    {
-       $custmer= Customer::create(['name'=>$request->name,'mobile'=>$request->mobile,"gender"=>$request->gender]);
-       $custmer->save();
+    // public function adddata(Request $request)
+    // {
+    //    $custmer= Customer::create(['name'=>$request->name,'mobile'=>$request->mobile,"gender"=>$request->gender]);
+    //    $custmer->save();
 
-       $hotel= Hotel::create(['name'=>$request->name,'city_id'=>$request->city_id]);
-       $hotel->save();
+    //    $hotel= Hotel::create(['name'=>$request->name,'city_id'=>$request->city_id]);
+    //    $hotel->save();
 
-       $tickt= Ticket::create(['city_id'=>$request->city_id,'company_id'=>$request->company_id]);
-       $tickt->save();
-       return redirect()->back();
-    }
+    //    $tickt= Ticket::create(['city_id'=>$request->city_id,'company_id'=>$request->company_id]);
+    //    $tickt->save();
+    //    return redirect()->back();
+    // }
 }
