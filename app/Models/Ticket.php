@@ -24,5 +24,6 @@ class Ticket extends Model
     ];
     protected $casts = [
     ];
+    //
 
 }
