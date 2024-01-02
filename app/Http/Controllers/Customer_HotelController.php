@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Customer_Hotel;
+use  App\Models\Customer_Hotel;
+use App\Models\Customer;
+use App\Models\Hotel;
 class Customer_HotelController extends Controller
 {
     public function index()
     {
-        $costomer_hotel= Costomer_Hotel::get();
-        return view("view_costomer_hotel",["costomer_hotel"=>$costomer_hotel]);
+        $customer_hotel= Customer_Hotel::get();
+        return view("view_customer_hotel",["customer_hotel"=>$customer_hotel]);
     }
 
     public function create()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Hotel;
+use App\Models\City;
 use Illuminate\Support\Facades\Validator;
 
 class HotelController extends Controller
@@ -11,7 +12,8 @@ class HotelController extends Controller
     public function index()
     {
        $hotel= Hotel::get();
-       return view("view_hotel",["hotel"=>$hotel]);
+       $city=City::get();
+       return view("view_hotel",["hotel"=>$hotel,"name"=>$city]);
     }
 
     public function create()
@@ -81,7 +83,13 @@ class HotelController extends Controller
     public function destroy($id)
     {
         $hotel=Hotel::find($id);
-        $hotel->delete();
+       
+        if( $hotel->delete()){
+         echo 'deleted';
+        }
+        else{
+         echo "connat delete this hotel";
+        }
     }
 
 }

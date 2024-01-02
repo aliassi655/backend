@@ -9,13 +9,13 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customer= Costomer::get();
+        $customer= Customer::get();
         return view("view_customer",["customer"=>$customer]);
     }
 
     public function create()
     {
-        return view("view_customer");
+        return view("create_customer");
     }
 
     public function store(Request $request)
@@ -24,7 +24,7 @@ class CustomerController extends Controller
         {
             $validate= Validator::make($request->all(),[
                 "name"=>"required|string",
-                "mobile"=>"required|string|regex:/(0)[0-9]/|not_regex:/[a-z]/max:10",
+                "mobile"=>"required|string|regex:/(0)[0-9]/|not_regex:/[a-z]/|max:10",
                 "gender"=>"required|string",
                 "email"=> "required|unique:customers,email|max:20|ends_with:hotmail.com,gmail.com",
 
@@ -45,16 +45,22 @@ class CustomerController extends Controller
                 ];
                 Customer::create($data);
             }
-            return view("view_customer");
-
         }
+
+
+         $customer= Customer::get();
+        return view("view_customer",["customer"=>$customer]);
+
+      
 
 
     }
 
     public function show($id)
     {
-        $customer=Customer::find($id);
+        
+        $customer = Customer::pluck('name', 'id');
+
         return view("view_customer",["customer"=>$customer]);
     }
 
@@ -71,7 +77,7 @@ class CustomerController extends Controller
             {
                 $validate= Validator::make($request->all(),[
                     "name"=>"required|string",
-                    "mobile"=>"required|string|regex:/(0)[0-9]/|not_regex:/[a-z]/max:10",
+                    "mobile"=>"required|string|regex:/(0)[0-9]/|not_regex:/[a-z]/|max:10",
                     "gender"=>"required|string",
                     "email"=> "required|unique:customers,email|max:20|ends_with:hotmail.com,gmail.com",
     
@@ -93,7 +99,13 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         
-        $customer=Customer::find($id);
-        $customer->delete();
+    $customer=Customer::find($id);
+    if($customer->delete())
+    {
+        echo 'deleted';
+    }
+    else{
+     echo "connat delete this customer";
+    }
     }
 }

@@ -28,21 +28,23 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
     ->middleware('auth')
     ->name('company.add');*/
 
-    Route::get('view_hotels', [HotelController::class, 'index']);
+    Route::get('view_hotel', [HotelController::class, 'index']);
     Route::get('add_hotel', [HotelController::class, 'create'])->name('add.hotel');
     Route::post('store_hotel', [HotelController::class, 'store'])->name('store.hotel');
     Route::get('edit_hotel/{id}', [HotelController::class,'edit'])->name("edit.hotel");
     Route::post('update_hotel/{id}', [HotelController::class, 'update'])->name('update.hotel');
+    Route::get('delete_hotel/{id}', [HotelController::class, 'destroy'])->name('delete.hotel');
    // ________________________________________________________________________//
    Route::get('view_customer', [CustomerController::class, 'index']);
    Route::get('add_customer', [CustomerController::class, 'create'])->name("add.customer");
    Route::post('store_customer', [CustomerController::class, 'store'])->name("store.customer");
-   Route::get('edit_customer', [CustomerController::class, 'edit'])->name("edit.customer");
-   Route::post('update_customer', [CustomerController::class, 'update'])->name("update.customer");
+   Route::get('edit_customer/{id}', [CustomerController::class, 'edit'])->name("edit.customer");
+   Route::post('update_customer/{id}', [CustomerController::class, 'update'])->name("update.customer");
+   Route::get('delete_customer/{id}', [CustomerController::class, 'destroy'])->name('delete.customer');
    // ________________________________________________________________________//
-   Route::get('view_customer.hotel', [CustomerHotelController::class, 'index']);
-   Route::get('add_customer.hotel', [CustomerHotelController::class, 'create'])->name("add.customer.hotel");
-   Route::post('store_customer.hotel', [CustomerHotelController::class, 'store'])->name("store.customer.hotel");
-   Route::get('edit_customer.hotel', [CustomerHotelController::class, 'edit'])->name("edit.customer.hotel");
-   Route::post('update_customer.hotel', [CustomerHotelController::class, 'update'])->name("update.customer.hotel");
+   Route::get('view_customer.hotel', [Customer_HotelController::class, 'index']);
+   Route::get('add_customer.hotel', [Customer_HotelController::class, 'create'])->name("add.customer.hotel");
+   Route::post('store_customer.hotel', [Customer_HotelController::class, 'store'])->name("store.customer.hotel");
+   Route::get('edit_customer.hotel/{id}', [Customer_HotelController::class, 'edit'])->name("edit.customer.hotel");
+   Route::post('update_customer.hotel/{id}', [Customer_HotelController::class, 'update'])->name("update.customer.hotel");
 
